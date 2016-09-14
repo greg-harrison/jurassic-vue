@@ -9,8 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "consolidate": "^0.14.1",
     "express": "^4.14.0",
+    "gulp": "^3.9.1",
     "mongoose": "^4.5.3",
-    "vue": "^1.0.26"
+    "swig": "^1.4.2",
+    "vue": "^1.0.26",
+    "vue-resource": "^0.9.3",
+    "vue-router": "^0.7.13"
   }
 }

@@ -1,27 +1,30 @@
 //Require Express
 var express = require('express');
 var app = express();
+var cons = require('consolidate');
+var path = require('path');
+
+var Character = require('./db').Character;
 
 var port = process.env.PORT || 8081;
 
 app.set('port', process.env.PORT || 8081);
+app.engine('html', cons.swig);
+app.set('views', path.join(__dirname, 'app'));
+app.set('view engine', 'html');
 
-// By using this, we are saying that the code in /dist/app should be
-//  mounted at /app on the Virtual Express server
-app.use('/app', express.static('./dist/app'));
+app.use(express.static(__dirname + '/app'));
 
-app.get('/', function(req, res){
-  var hostname = 'http://' + req.headers.host;
-  req.pipe(request(hostname + '/index.html')).pipe(res);
+app.get('/', function(req, res) {
+      res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-// This section is only for the API
-// app.all('/api/*', function(req, res){
-//   var apiUrl = '';
-//   var apiSplat = req.url.replace('/api','');
-//   var url = apiUrl + apiSplat;
-
-//   req.pipe(request(url)).pipe(res);
-// });
+app.get('/api', function(req, res){
+  Character.find({}, function(err, characters){
+    console.log(characters);
+    res.render('index', {characters: characters});
+    // res.json(characters);
+  });
+});
 
 var server = app.listen(port);
